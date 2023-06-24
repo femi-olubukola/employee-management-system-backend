@@ -32,11 +32,11 @@ public class EmployeeController {
 
     // get employee by id rest api
     @GetMapping("/employees/{id}")
-    public Employee getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
 
         Employee employee = employeeRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("employee not exist with id: " + id));
-        return employee;
+        return ResponseEntity.ok(employee);
     }
 }
 
