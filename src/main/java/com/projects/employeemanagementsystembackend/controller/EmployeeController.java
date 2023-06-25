@@ -1,8 +1,10 @@
 package com.projects.employeemanagementsystembackend.controller;
 
+import com.projects.employeemanagementsystembackend.exception.ResourceNotFoundException;
 import com.projects.employeemanagementsystembackend.model.Employee;
 import com.projects.employeemanagementsystembackend.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +28,15 @@ public class EmployeeController {
     @PostMapping("/employees")
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeRepository.save(employee);
+    }
+
+    // get employee by id rest api
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+
+        Employee employee = employeeRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("employee not exist with id: " + id));
+        return ResponseEntity.ok(employee);
     }
 }
 
